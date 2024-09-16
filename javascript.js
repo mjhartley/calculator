@@ -1,7 +1,10 @@
 // constants
 
 const display = document.querySelector(".display");
-let workingStorage = 0;
+let workingStorage = "";
+let workingStorage1 = "";
+let workingStorage2 ="";
+let subTotal = 0;
 let num1 = "";
 let num2 = "";
 let wsAction = "";
@@ -17,35 +20,55 @@ myNumButtons.forEach((button) => {
         console.log(e.target.innerText);
         console.log(e.target.dataset.action);
         console.log("wsAction: " + wsAction);
-        updateDisplay(e.target.innerText);
 
         // perhaps do with with a case statement
 
         if(e.target.dataset.action == "+"){
+
+            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
+              //  calculate(num1, num2, wsAction); 
+            }
+
             console.log("Setting WSAction to add");
             wsAction = "+";
-            updateDisplay(wsAction)
+            updateDisplay(workingStorage+ " " + wsAction)
+
             return;
         }
 
         if(e.target.dataset.action == "-"){
+            
+            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
+             //   calculate(num1, num2, wsAction); 
+            }
+            
             console.log("Setting WSAction to subtract");
             wsAction = "-";
-            updateDisplay(wsAction)
+            updateDisplay(workingStorage+ " " + wsAction)
             return;
         }
 
         if(e.target.dataset.action == "/"){
+            
+            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
+           //     calculate(num1, num2, wsAction); 
+            }
+            
             console.log("Setting WSAction to divide");
             wsAction = "/";
-            updateDisplay(wsAction)
+            updateDisplay(workingStorage+ " " + wsAction)
             return;
         }
 
         if(e.target.dataset.action == "*"){
+            
+            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
+         //       calculate(num1, num2, wsAction); 
+            }
+           
             console.log("Setting WSAction to multiply");
             wsAction = "*";
-            updateDisplay(wsAction)
+            updateDisplay(workingStorage+ " " + wsAction)
             return;
         }
 
@@ -64,19 +87,24 @@ myNumButtons.forEach((button) => {
 
         if (wsAction == "" ){
             num1 = num1 + e.target.innerText;
-            console.log("Num 1 is " + num1 );
-            updateDisplay(num1);
+            workingStorage = num1;
+            console.log("Num 1 is " + workingStorage );
+            updateDisplay(num1 + " " + wsAction);
 
         }
 
         if (wsAction !== ""){
             num2 = num2 + e.target.innerText;
+      //      workingStorage = workingStorage + " " + " " + wsAction + " "  + num2;
+            displayText = workingStorage + " " + wsAction + " " + num2;
             console.log("Num2 is " + num2 );
-            updateDisplay(num2);
+            updateDisplay(displayText);
         }
 
 
-
+//        if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
+//            calculate(num1, num2, wsAction); 
+//      }
 
     });
 });
@@ -85,23 +113,23 @@ myNumButtons.forEach((button) => {
 
 
 function add(num1, num2){
-    console.log("Adding : " + num1 + "and " + num2);
-    return parseInt(num1) + parseInt(num2);
+    console.log("Adding : " + num1 + " and " + num2);
+    return parseFloat(num1) + parseFloat(num2);
 }
 
 function subtract(num1, num2){
-    console.log("Subtracting : " + num1 + "and " + num2);
-    return parseInt(num1) - parseInt(num2);
+    console.log("Subtracting : " + num1 + " and " + num2);
+    return parseFloat(num1) - parseFloat(num2);
 }
 
 function divide(num1, num2){
-    console.log("Dividing : " + num1 + "and " + num2);
-    return parseInt(num1) / parseInt(num2);
+    console.log("Dividing : " + num1 + " and " + num2);
+    return parseFloat(num1) / parseFloat(num2);
 }
 
 function multiply(num1, num2){
-    console.log("Multiplying : " + num1 + "and " + num2);
-    return parseInt(num1) * parseInt(num2);
+    console.log("Multiplying : " + num1 + " and " + num2);
+    return parseFloat(num1) * parseFloat(num2);
 }
 
 function calculate (calNum1, calNum2, operation){
@@ -124,7 +152,7 @@ function calculate (calNum1, calNum2, operation){
 
     updateDisplay(workingStorage);
     wsAction = "";
-    num1 = workingStorage;    
+    num1 = workingStorage;
     num2 = "";
 
 }
