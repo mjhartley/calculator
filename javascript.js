@@ -1,120 +1,99 @@
 // constants
 
 const display = document.querySelector(".display");
-let workingStorage = "";
-let workingStorage1 = "";
-let workingStorage2 ="";
-let subTotal = 0;
+const myNumButtons = document.querySelectorAll(".button");
+let wsSubTotal = "";
 let num1 = "";
 let num2 = "";
 let wsAction = "";
 let displayText = ""; 
+let temp;
+let result;
 
 
 //Add event listeners to buttons
 
-const myNumButtons = document.querySelectorAll(".button");
-
 myNumButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
-        console.log(e.target.innerText);
-        console.log(e.target.dataset.action);
+
+        console.log("****** Values ******");
+        console.log("Input: " + e.target.innerText);
+        console.log("Input Action: " + e.target.dataset.action);
         console.log("wsAction: " + wsAction);
+        console.log("DisplayText: " + displayText);
+
 
         // perhaps do with with a case statement
-
-        if(e.target.dataset.action == "+"){
-
-            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
-              //  calculate(num1, num2, wsAction); 
-            }
-
-            console.log("Setting WSAction to add");
-            wsAction = "+";
-            updateDisplay(workingStorage+ " " + wsAction)
-
-            return;
-        }
-
-        if(e.target.dataset.action == "-"){
-            
-            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
-             //   calculate(num1, num2, wsAction); 
-            }
-            
-            console.log("Setting WSAction to subtract");
-            wsAction = "-";
-            updateDisplay(workingStorage+ " " + wsAction)
-            return;
-        }
-
-        if(e.target.dataset.action == "/"){
-            
-            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
-           //     calculate(num1, num2, wsAction); 
-            }
-            
-            console.log("Setting WSAction to divide");
-            wsAction = "/";
-            updateDisplay(workingStorage+ " " + wsAction)
-            return;
-        }
-
-        if(e.target.dataset.action == "*"){
-            
-            if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
-         //       calculate(num1, num2, wsAction); 
-            }
-           
-            console.log("Setting WSAction to multiply");
-            wsAction = "*";
-            updateDisplay(workingStorage+ " " + wsAction)
-            return;
-        }
-
+        
         if(e.target.dataset.action == "clear"){
             clear();
             return;
         }
 
-
         if(e.target.dataset.action == "equals"){
-            calculate(num1, num2, wsAction);
+
+            if((wsSubTotal == "") || (num2 == "") || (wsAction == "")){
+                //do nothing 
+                return;
+            } else {
+
+            result = calculate(wsSubTotal, num2, wsAction);
+            updateDisplay(result);
+            num2 = "";
+            num1 = "";
+            wsSubTotal = result;     
             return;
-        }
+            }
+        }    
 
-        // store the input for num1 while action is undefined 
+        // process action key press
 
-        if (wsAction == "" ){
+        if (e.target.dataset.action !== undefined) {
+
+
+                if((num2 == "") && (wsSubTotal !== "")){
+                    // set action
+                    
+                    wsAction = e.target.dataset.action;
+                    updateDisplay(wsSubTotal + " " + wsAction);
+
+                } else {
+                    // if we have num1 and num2 ans action, calculate subtotal
+                    result = calculate(wsSubTotal, num2, wsAction);
+                    updateDisplay(result);
+                    num2 = "";
+                    num1 = "";
+                    wsSubTotal = result;  
+                }  
+
+            return;        
+        }        
+
+        // if not operation has been set, capture the first number and keep going until an action is required
+
+        if (wsAction == ""){
             num1 = num1 + e.target.innerText;
-            workingStorage = num1;
-            console.log("Num 1 is " + workingStorage );
-            updateDisplay(num1 + " " + wsAction);
-
+            wsSubTotal = num1;
+            console.log("Num is " + wsSubTotal );          
+            updateDisplay(wsSubTotal);
         }
+
+        // if an action has been requested, capture the second number 
 
         if (wsAction !== ""){
             num2 = num2 + e.target.innerText;
-      //      workingStorage = workingStorage + " " + " " + wsAction + " "  + num2;
-            displayText = workingStorage + " " + wsAction + " " + num2;
             console.log("Num2 is " + num2 );
-            updateDisplay(displayText);
+            display.innerText = wsSubTotal + " " + wsAction + " " + num2;
         }
-
-
-//        if ((num1 !== "") && (num2 !== "") && (wsAction !== "")){
-//            calculate(num1, num2, wsAction); 
-//      }
-
-    });
+     });
 });
-
 
 
 
 function add(num1, num2){
     console.log("Adding : " + num1 + " and " + num2);
-    return parseFloat(num1) + parseFloat(num2);
+    workingStorage =  parseFloat(num1) + parseFloat(num2);
+    return workingStorage;
 }
 
 function subtract(num1, num2){
@@ -133,6 +112,7 @@ function multiply(num1, num2){
 }
 
 function calculate (calNum1, calNum2, operation){
+
     if(operation == "+"){
         workingStorage = add(calNum1, calNum2);
     }
@@ -150,20 +130,19 @@ function calculate (calNum1, calNum2, operation){
 
     }
 
-    updateDisplay(workingStorage);
     wsAction = "";
-    num1 = workingStorage;
-    num2 = "";
+    return workingStorage;
 
 }
 
 function clear (){
     num1 = "";
     num2 = "";
-    wsAction = "";
-    display.innerText = "0";
     workingStorage = "";
-    displayText = "";
+    wsSubTotal = "";
+    wsAction = "";  
+    displayText = "0";
+    updateDisplay(displayText);
 
 }
 
