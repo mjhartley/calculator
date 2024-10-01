@@ -42,6 +42,7 @@ myNumButtons.forEach((button) => {
             num2 = "";
             num1 = "";
             wsSubTotal = result;     
+            wsAction = "";
             return;
             }
         }    
@@ -50,27 +51,30 @@ myNumButtons.forEach((button) => {
 
         if (e.target.dataset.action !== undefined) {
 
+           
+            if((num2 == "") && (wsSubTotal !== "")){
+                // set action
+                wsAction = e.target.dataset.action;
+                updateDisplay(wsSubTotal + " " + wsAction);
 
-                if((num2 == "") && (wsSubTotal !== "")){
-                    // set action
-                    
-                    wsAction = e.target.dataset.action;
-                    updateDisplay(wsSubTotal + " " + wsAction);
-
-                } else if((wsSubTotal == "") || (num2 == "") || (wsAction == "")){
-                    //do nothing 
-                    return;
+            } else if((wsSubTotal == "") || (num2 == "") || (wsAction == "")){
+                //do nothing 
+                return;
+            
+                } else {
+                // if we have num1 and num2 and action, calculate subtotal
+                result = calculate(wsSubTotal, num2, wsAction);
                 
-                 } else {
-                    // if we have num1 and num2 and action, calculate subtotal
-                    result = calculate(wsSubTotal, num2, wsAction);
-                    updateDisplay(result);
-                    num2 = "";
-                    num1 = "";
-                    wsSubTotal = result;  
-                    wsAction = "";
+                wsAction = e.target.dataset.action;
 
-                }  
+                updateDisplay(result + " " + wsAction);
+
+                num2 = "";
+                num1 = "";
+                wsSubTotal = result;  
+           //     wsAction = "";
+
+            }  
 
             return;        
         }        
@@ -136,7 +140,6 @@ function calculate (calNum1, calNum2, operation){
 
     }
 
-    wsAction = "";
     return workingStorage;
 
 }
