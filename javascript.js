@@ -57,13 +57,19 @@ myNumButtons.forEach((button) => {
                     wsAction = e.target.dataset.action;
                     updateDisplay(wsSubTotal + " " + wsAction);
 
-                } else {
-                    // if we have num1 and num2 ans action, calculate subtotal
+                } else if((wsSubTotal == "") || (num2 == "") || (wsAction == "")){
+                    //do nothing 
+                    return;
+                
+                 } else {
+                    // if we have num1 and num2 and action, calculate subtotal
                     result = calculate(wsSubTotal, num2, wsAction);
                     updateDisplay(result);
                     num2 = "";
                     num1 = "";
                     wsSubTotal = result;  
+                    wsAction = "";
+
                 }  
 
             return;        
